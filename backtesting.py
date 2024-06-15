@@ -118,19 +118,10 @@ def calculate_portfolio_metrics(signals_df, inital_capital, share_size):
 
     return signals_df
 
-
 def calculate_trade_metrics(crypto, signals_df):
-    trade_evaluation_df = pd.DataFrame(
-    columns=[
-        'Stock', 
-        'Entry Date', 
-        'Exit Date', 
-        'Shares', 
-        'Entry Share Price', 
-        'Exit Share Price', 
-        'Entry Portfolio Holding', 
-        'Exit Portfolio Holding', 
-        'Profit/Loss'])
+    # List to store trade records
+    trade_records = []
+
     # Initialize iterative variables
     entry_date = ''
     exit_date = ''
@@ -139,10 +130,8 @@ def calculate_trade_metrics(crypto, signals_df):
     share_size = 0
     entry_share_price = 0
     exit_share_price = 0
+
     # Loop through signal DataFrame
-    # If `Entry/Exit` is 1, set entry trade metrics
-    # Else if `Entry/Exit` is -1, set exit trade metrics and calculate profit,
-    # Then append the record to the trade evaluation DataFrame
     for index, row in signals_df.iterrows():
         if row['Entry/Exit'] == 1:
             entry_date = index
@@ -153,21 +142,35 @@ def calculate_trade_metrics(crypto, signals_df):
             exit_date = index
             exit_portfolio_holding = abs(row['close'] * row['Entry/Exit Position'])
             exit_share_price = row['close']
-            profit_loss =  exit_portfolio_holding - entry_portfolio_holding 
-            trade_evaluation_df = trade_evaluation_df.append(
-                {
-                    'Stock': crypto,
-                    'Entry Date': entry_date,
-                    'Exit Date': exit_date,
-                    'Shares': share_size,
-                    'Entry Share Price': entry_share_price,
-                    'Exit Share Price': exit_share_price,
-                    'Entry Portfolio Holding': entry_portfolio_holding,
-                    'Exit Portfolio Holding': exit_portfolio_holding,
-                    'Profit/Loss': profit_loss
-                },
-                ignore_index=True)
+            profit_loss = exit_portfolio_holding - entry_portfolio_holding
+            trade_records.append({
+                'Stock': crypto,
+                'Entry Date': entry_date,
+                'Exit Date': exit_date,
+                'Shares': share_size,
+                'Entry Share Price': entry_share_price,
+                'Exit Share Price': exit_share_price,
+                'Entry Portfolio Holding': entry_portfolio_holding,
+                'Exit Portfolio Holding': exit_portfolio_holding,
+                'Profit/Loss': profit_loss
+            })
+
+    # Create DataFrame from the list of trade records
+    trade_evaluation_df = pd.DataFrame(trade_records, columns=[
+        'Stock', 
+        'Entry Date', 
+        'Exit Date', 
+        'Shares', 
+        'Entry Share Price', 
+        'Exit Share Price', 
+        'Entry Portfolio Holding', 
+        'Exit Portfolio Holding', 
+        'Profit/Loss'
+    ],  dtype=object)
+
+    # Print total profit/loss
     print(trade_evaluation_df['Profit/Loss'].sum())
+    
     return trade_evaluation_df
 
 
@@ -186,7 +189,7 @@ def evaluate_portfolio_metrics(signals_df, trade_evaluation_df):
     columns = ['Backtest']
 
     # Initialize the DataFrame with index set to evaluation metrics and column as `Backtest` (just like PyFolio)
-    portfolio_evaluation_df = pd.DataFrame(index=metrics, columns=columns).rename_axis('Metrics')
+    portfolio_evaluation_df = pd.DataFrame(index=metrics, columns=columns, dtype=object).rename_axis('Metrics')
     portfolio_evaluation_df
     
     # Calculate cumulative return
@@ -231,5 +234,3 @@ def evaluate_portfolio_metrics(signals_df, trade_evaluation_df):
     
     portfolio_evaluation_df
     return portfolio_evaluation_df.round(2)
-
-
