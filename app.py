@@ -13,10 +13,10 @@ import plotly.graph_objs as go
 from plotly import tools
 
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output, State
-import dash_table
+from dash import dash_table
 import dash_daq as daq
 import ccxt
 import crypto_stream
@@ -662,5 +662,5 @@ app.layout = html.Div(
 # Running the server
 if __name__ == "__main__":
     #app.run_server(debug=True, port=8050)
-    app.run_server()
+    app.run_server(port=8060)
     
