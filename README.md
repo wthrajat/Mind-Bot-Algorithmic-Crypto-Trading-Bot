@@ -1,6 +1,3 @@
-
-A cryptocurrency trading bot is a software program designed to recognize the crypto-market’s trends and automatically execute trades. A trading bot takes the monotony of pushing the buy and sell button physically and trades on the trader’s behalf.
-
 ## Features
 
 * [Machine Learning Model](#Machine-Learning-Model)
@@ -12,6 +9,7 @@ A cryptocurrency trading bot is a software program designed to recognize the cry
 
 Here we used Random Forest Classifier to predict whether to buy or sell the crypto based on the trading signals we used. We have two Random Forest Classifier Model trained by last 5 year of data. Used TAlib library for calculating the trading signals.
 
+```rs
 - Model 1 :random_forest_model_1.joblib
     - Exponential Moving Average based on Closing Price
     - Exponential Moving Average based on Volumn
@@ -23,7 +21,8 @@ Here we used Random Forest Classifier to predict whether to buy or sell the cryp
     - Relative Strength Index (RSI)
     - Stochastic Oscillator
     - Moving Average Convergence/Divergence (MACD)
-    - Bollinger Bands  
+    - Bollinger Bands
+```
     
 ## Backtesting
 
@@ -40,15 +39,6 @@ In automated trading system (ATS), a subset of algorithmic trading, uses a compu
 Here we used Random Forest Classifier model to decided whether we are good buy or sell the crypto. For similicity We have added the Simple Moving Average(SMA10) implemented along with Simple Moving average.
 
 ![trading_bot](Images/trading-bot.png)
-
-
-## Run File
-
-1. Install all dependencies - [requirement.txt] (/requirements.txt)
-2. Install TALib Library as its not in requirement.txt
-3. Goto File [run.ipynb](/run.ipynb)
-4. Run the first cell and you can find other helpful stuffs and links
-
 
 ## Demo
 

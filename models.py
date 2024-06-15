@@ -6,7 +6,7 @@ import rf_model_2
 import warnings
 warnings.filterwarnings('ignore')
 
-MODEL_LIST = ['SMA10', 'Random Forest Classifier - Variant 1', 'Random Forest Classifier - Variant 2']
+MODEL_LIST = ['Simple Moving Average 10', 'Random Forest Classifier - Variant 1', 'Random Forest Classifier - Variant 2']
 
 def model_list():
     return MODEL_LIST
