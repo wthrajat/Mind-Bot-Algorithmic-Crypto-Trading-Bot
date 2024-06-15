@@ -122,7 +122,7 @@ def generate_signals(df):
     signals["signal"] = np.where(
         signals["sma10"] > signals["sma20"], 1.0, 0.0
     )
-    signals.loc[:short_window-1, ["signal"]] = 0.0
+    signals.iloc[:short_window-1, signals.columns.get_loc("signal")] = 0.0
     # Calculate the points in time at which a position should be taken, 1 or -1
 
     signals["entry/exit"] = signals["signal"].diff()

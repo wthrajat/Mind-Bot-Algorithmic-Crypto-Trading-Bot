@@ -28,8 +28,8 @@ def predict(df_ee, model_name, no_of_data=22):
     data = past_df.tail(2)[model.get_statergies()]
     predictions = model.load_model().predict(data)
     entry_exit = predictions[1]-predictions[0]
-    df_ee.loc[df_ee.shape[0]-1:,['signal']] = predictions[1]
-    df_ee.loc[df_ee.shape[0]-1:,['entry/exit']]=entry_exit
+    df_ee.iloc[df_ee.shape[0]-1:, df_ee.columns.get_loc('signal')] = predictions[1]
+    df_ee.iloc[df_ee.shape[0]-1:, df_ee.columns.get_loc('entry/exit')] = entry_exit
     if(entry_exit!=0):
         print(f'-----------------df_ee---{entry_exit}')
         print(df_ee)

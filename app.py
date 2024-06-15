@@ -343,7 +343,12 @@ def execute_trade(n_intervals, buy_sell_data, entry_exit_df, model):
                State('no-of-shares-input', 'value')])
 def reinitalize_model(n_clicks, crypto, model_name, timeframe, initial_capital, no_of_shares):
     portfolio_metrics, trade_metrics, portfolio_evaluation = backtesting.main(crypto, model_name, timeframe, initial_capital, no_of_shares)
-    return '', {'display':'block'},crypto, trade_metrics.to_dict("rows"), get_backtest_fig(portfolio_metrics, timeframe), portfolio_evaluation.reset_index().to_dict("rows")
+    
+    # Convert DataFrame to dictionary with 'records' orientation
+    trade_metrics_dict = trade_metrics.to_dict(orient="records")
+    portfolio_evaluation_dict = portfolio_evaluation.reset_index().to_dict(orient="records")
+    
+    return '', {'display':'block'}, crypto, trade_metrics_dict, get_backtest_fig(portfolio_metrics, timeframe), portfolio_evaluation_dict
 
 
 '''
