@@ -1,6 +1,3 @@
-# Mind Bot
-
-![trading_bot](Images/trading_crypto_bot.jpg)
 
 A cryptocurrency trading bot is a software program designed to recognize the crypto-market’s trends and automatically execute trades. A trading bot takes the monotony of pushing the buy and sell button physically and trades on the trader’s behalf.
 
@@ -38,7 +35,7 @@ Backtesting is a key component of effective trading system development, that see
 
 ## Trading Automation
 
-n automated trading system (ATS), a subset of algorithmic trading, uses a computer program to create buy and sell orders and automatically submits the orders to a market center or exchange. The computer program will automatically generate orders based on predefined set of rules using a trading strategy which is based on technical analysis, advanced statistical and mathematical computations or input from other electronic sources.
+In automated trading system (ATS), a subset of algorithmic trading, uses a computer program to create buy and sell orders and automatically submits the orders to a market center or exchange. The computer program will automatically generate orders based on predefined set of rules using a trading strategy which is based on technical analysis, advanced statistical and mathematical computations or input from other electronic sources.
 
 Here we used Random Forest Classifier model to decided whether we are good buy or sell the crypto. For similicity We have added the Simple Moving Average(SMA10) implemented along with Simple Moving average.
 

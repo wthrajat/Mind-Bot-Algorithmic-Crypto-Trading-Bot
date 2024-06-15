@@ -6,15 +6,15 @@ import rf_model_2
 import warnings
 warnings.filterwarnings('ignore')
 
-MODEL_LIST = ['SMA10', 'Random Forest Classifier - 1', 'Random Forest Classifier - 2']
+MODEL_LIST = ['SMA10', 'Random Forest Classifier - Variant 1', 'Random Forest Classifier - Variant 2']
 
 def model_list():
     return MODEL_LIST
 
 def get_models(model_name):
-    if(model_name=='Random Forest Classifier - 1'):
+    if(model_name=='Random Forest Classifier - Variant 1'):
         return rf_model
-    if(model_name=='Random Forest Classifier - 2'):
+    if(model_name=='Random Forest Classifier - Variant 2'):
         return rf_model_2
     return rf_model
 
