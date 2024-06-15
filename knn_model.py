@@ -4,9 +4,7 @@ from joblib import dump, load
 from sklearn.neighbors import KNeighborsClassifier
 import crypto_stream
 
-# Training the KNN model (you should have this in a separate script, not necessarily here)
 def train_knn_model():
-    # Load your training data
     df = crypto_stream.get_data_from_table(1000)  # Example: get 1000 rows of data
     df = get_trading_singals(df)
     
@@ -16,10 +14,8 @@ def train_knn_model():
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(X, y)
     
-    # Save the model
     dump(knn, 'knn_model.joblib')
 
-# Load the KNN model
 MODEL = load('knn_model.joblib')
 
 def load_model():
@@ -44,47 +40,36 @@ def get_statergies():
     return ['crossover_signal', 'vol_trend_signal', 'bollinger_signal']
 
 def get_trading_singals(stock_df):
-    # Drop NAs and calculate daily percent return
     stock_df['daily_return'] = stock_df['close'].dropna().pct_change()
 
-    # Set short and long windows
     short_window = 1
     long_window = 10
 
-    # Construct a `Fast` and `Slow` Exponential Moving Average from short and long windows, respectively
     stock_df['fast_close'] = stock_df['close'].ewm(halflife=short_window).mean()
     stock_df['slow_close'] = stock_df['close'].ewm(halflife=long_window).mean()
 
-    # Construct a crossover trading signal
     stock_df['crossover_long'] = np.where(stock_df['fast_close'] > stock_df['slow_close'], 1.0, 0.0)
     stock_df['crossover_short'] = np.where(stock_df['fast_close'] < stock_df['slow_close'], -1.0, 0.0)
     stock_df['crossover_signal'] = stock_df['crossover_long'] + stock_df['crossover_short']
 
-    # Set short and long volatility windows
     short_vol_window = 1
     long_vol_window = 10
 
-    # Construct a `Fast` and `Slow` Exponential Moving Average from short and long windows, respectively
     stock_df['fast_vol'] = stock_df['daily_return'].ewm(halflife=short_vol_window).std()
     stock_df['slow_vol'] = stock_df['daily_return'].ewm(halflife=long_vol_window).std()
 
-    # Construct a crossover trading signal
     stock_df['vol_trend_long'] = np.where(stock_df['fast_vol'] < stock_df['slow_vol'], 1.0, 0.0)
     stock_df['vol_trend_short'] = np.where(stock_df['fast_vol'] > stock_df['slow_vol'], -1.0, 0.0) 
     stock_df['vol_trend_signal'] = stock_df['vol_trend_long'] + stock_df['vol_trend_short']
 
-    # Set bollinger band window
     bollinger_window = 20
 
-    # Calculate rolling mean and standard deviation
     stock_df['bollinger_mid_band'] = stock_df['close'].rolling(window=bollinger_window).mean()
     stock_df['bollinger_std'] = stock_df['close'].rolling(window=20).std()
 
-    # Calculate upper and lowers bands of bollinger band
     stock_df['bollinger_upper_band']  = stock_df['bollinger_mid_band'] + (stock_df['bollinger_std'] * 1)
     stock_df['bollinger_lower_band']  = stock_df['bollinger_mid_band'] - (stock_df['bollinger_std'] * 1)
 
-    # Calculate bollinger band trading signal
     stock_df['bollinger_long'] = np.where(stock_df['close'] < stock_df['bollinger_lower_band'], 1.0, 0.0)
     stock_df['bollinger_short'] = np.where(stock_df['close'] > stock_df['bollinger_upper_band'], -1.0, 0.0)
     stock_df['bollinger_signal'] = stock_df['bollinger_long'] + stock_df['bollinger_short']
